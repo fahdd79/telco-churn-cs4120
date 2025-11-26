@@ -80,13 +80,12 @@ project/
 ├── data/
 │   └── Telco-Customer-Churn.csv
 │
-├── src/
+├├── src/
 │   ├── data.py              # loading, cleaning, splitting
 │   ├── features.py          # preprocessing utilities
 │   ├── train_baselines.py   # classical ML models
 │   ├── train_nn.py          # neural network training
-│   ├── evaluate.py          # evaluation and comparison
-│   └── EDA.py               # exploratory data analysis
+│   └── evaluate.py          # evaluation and comparison
 │
 ├── reports/
 │   ├── plots/               # generated visualizations
@@ -94,8 +93,8 @@ project/
 │
 ├── models/                  # saved neural network models
 ├── mlruns/                  # MLflow tracking data
-├── notebooks/               # optional EDA notebooks/scripts
-│
+├── notebooks/
+│   └── EDA.py               # exploratory data analysis
 ├── requirements.txt
 ├── LICENSE
 └── README.md
