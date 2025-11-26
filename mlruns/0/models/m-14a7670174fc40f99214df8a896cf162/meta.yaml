@@ -1,0 +1,10 @@
+artifact_location: file:///Users/apple/PycharmProjects/telco-churn-cs4120/mlruns/0/models/m-14a7670174fc40f99214df8a896cf162/artifacts
+creation_timestamp: 1762038550910
+experiment_id: '0'
+last_updated_timestamp: 1762038552662
+model_id: m-14a7670174fc40f99214df8a896cf162
+model_type: null
+name: model
+source_run_id: a3611e11151b4e64918c6bc9b5aa54a4
+status: 2
+status_message: null

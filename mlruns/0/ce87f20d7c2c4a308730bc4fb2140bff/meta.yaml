@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/apple/PycharmProjects/telco-churn-cs4120/mlruns/0/ce87f20d7c2c4a308730bc4fb2140bff/artifacts
+end_time: 1763861250941
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: ce87f20d7c2c4a308730bc4fb2140bff
+run_name: class_DecisionTreeClassifier
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763861250908
+status: 3
+tags: []
+user_id: apple

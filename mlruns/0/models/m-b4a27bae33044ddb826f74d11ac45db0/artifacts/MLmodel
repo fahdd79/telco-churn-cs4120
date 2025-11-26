@@ -1,0 +1,22 @@
+artifact_path: file:///Users/apple/PycharmProjects/telco-churn-cs4120/mlruns/0/models/m-b4a27bae33044ddb826f74d11ac45db0/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.4
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+mlflow_version: 3.5.1
+model_id: m-b4a27bae33044ddb826f74d11ac45db0
+model_size_bytes: 731246
+model_uuid: m-b4a27bae33044ddb826f74d11ac45db0
+prompts: null
+run_id: 91d7661752f4493881270674c7725d9a
+utc_time_created: '2025-11-01 23:14:04.952476'
