@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score, mean_absolute_error, mean_squared_error
+from sklearn.utils.class_weight import compute_class_weight
+
 import mlflow
 import mlflow.tensorflow
 
@@ -62,6 +64,9 @@ def build_regression_model(input_dim: int) -> keras.Model:
     return model
 
 
+# -------------------------
+# Data loading and splits
+# -------------------------
 df_raw = load_raw()
 df = clean(df_raw)
 
@@ -93,15 +98,32 @@ y_reg_train = np.asarray(y_reg_train).astype("float32")
 y_reg_val = np.asarray(y_reg_val).astype("float32")
 y_reg_test = np.asarray(y_reg_test).astype("float32")
 
+# -------------------------
+# Class imbalance handling
+# -------------------------
+classes = np.unique(y_class_train)
+class_weights = compute_class_weight(
+    class_weight="balanced",
+    classes=classes,
+    y=y_class_train.astype(int),
+)
+class_weight_dict = dict(zip(classes, class_weights))
+
 input_dim = X_train_scaled.shape[1]
 batch_size = 32
 max_epochs = 50
 
 mlflow.tensorflow.autolog(disable=True)
 
+# =========================
+# Classification NN
+# =========================
 with mlflow.start_run(run_name="nn_classification"):
     model_clf = build_classification_model(input_dim)
-    es = callbacks.EarlyStopping(monitor="val_loss", patience=5, restore_best_weights=True)
+    es = callbacks.EarlyStopping(
+        monitor="val_loss", patience=5, restore_best_weights=True
+    )
+
     history_clf = model_clf.fit(
         X_train_scaled,
         y_class_train,
@@ -110,6 +132,7 @@ with mlflow.start_run(run_name="nn_classification"):
         batch_size=batch_size,
         verbose=0,
         callbacks=[es],
+        class_weight=class_weight_dict,
     )
 
     y_val_proba = model_clf.predict(X_val_scaled).ravel()
@@ -130,6 +153,8 @@ with mlflow.start_run(run_name="nn_classification"):
     mlflow.log_param("learning_rate", 1e-3)
     mlflow.log_param("batch_size", batch_size)
     mlflow.log_param("max_epochs", max_epochs)
+    mlflow.log_param("class_weight_0", class_weight_dict.get(0))
+    mlflow.log_param("class_weight_1", class_weight_dict.get(1))
 
     mlflow.log_metrics({
         "acc_val": acc_val,
@@ -154,9 +179,15 @@ with mlflow.start_run(run_name="nn_classification"):
 
     model_clf.save(MODELS_DIR / "nn_classifier.h5")
 
+# =========================
+# Regression NN
+# =========================
 with mlflow.start_run(run_name="nn_regression"):
     model_reg = build_regression_model(input_dim)
-    es_reg = callbacks.EarlyStopping(monitor="val_loss", patience=5, restore_best_weights=True)
+    es_reg = callbacks.EarlyStopping(
+        monitor="val_loss", patience=5, restore_best_weights=True
+    )
+
     history_reg = model_reg.fit(
         X_train_scaled,
         y_reg_train,

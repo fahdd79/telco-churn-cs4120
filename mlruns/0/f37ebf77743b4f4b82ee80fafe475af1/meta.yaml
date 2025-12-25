@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/apple/PycharmProjects/telco-churn-cs4120/mlruns/0/f37ebf77743b4f4b82ee80fafe475af1/artifacts
+end_time: 1764556488466
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f37ebf77743b4f4b82ee80fafe475af1
+run_name: reg_LinearRegression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1764556488437
+status: 3
+tags: []
+user_id: apple

@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/apple/PycharmProjects/telco-churn-cs4120/mlruns/0/4751782d9e4a4d5eb2019c5e358855da/artifacts
+end_time: 1766624684789
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4751782d9e4a4d5eb2019c5e358855da
+run_name: nn_classification
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1766624682136
+status: 3
+tags: []
+user_id: apple

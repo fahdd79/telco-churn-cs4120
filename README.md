@@ -278,6 +278,18 @@ All neural networks used:
 - Same data splits as classical models  
 
 ---
+## Model Enhancements and Experimental Evolution
+
+This project evolved iteratively over the course of development. After establishing classical baselines and neural network models, several enhancements were introduced to improve performance and analysis while maintaining strict experimental discipline.
+
+**Key enhancements include:**
+- **Gradient Boosting (XGBoost):** Added as a stronger classical model for tabular data and evaluated under the same train/validation/test split as all other models.
+- **Class Imbalance Handling:** Class weighting was incorporated where appropriate to account for the skewed churn distribution.
+- **Threshold Optimization:** Decision thresholds were optimized on the validation set to maximize F1-score, highlighting differences between probability ranking and decision-level performance.
+
+All enhancements were evaluated without data leakage. Original baseline results remain valid for the experimental configurations under which they were produced.
+
+---
 ## 6. Results Summary
 
 This section summarizes the performance of all classical and neural models on the **held-out test set**.
@@ -286,21 +298,27 @@ This section summarizes the performance of all classical and neural models on th
 
 ### 6.1 Classification Results (Churn Prediction)
 
-**Best Classical Model: Logistic Regression**  
-- **Accuracy:** ~0.79  
-- **F1-score:** ~0.585  
-- **ROC-AUC:** ~0.83  
+## 6.1 Classification Results (Churn Prediction)
+
+**Best Classical Model: XGBoost (Gradient Boosting)**  
+- **Accuracy (test):** ~0.79  
+- **F1-score (test):** ~0.60  
+- **ROC-AUC (test):** ~0.83  
 
 **Neural Network (MLP) – Classification**  
-- **Accuracy:** ~0.79  
-- **F1-score:** ~0.57  
-- **ROC-AUC:** ~0.82  
+- **Accuracy (test, threshold = 0.5):** ~0.79  
+- **F1-score (test, threshold = 0.57):** ~0.57  
+- **ROC-AUC (test):** ~0.82  
+
+**Threshold-Optimized Results**
+- Validation-based threshold optimization improved F1-score for both models.
+- The neural network benefited more from threshold tuning, achieving higher validation F1 at an optimized threshold.
+- XGBoost showed smaller gains from threshold adjustment, with its optimal threshold remaining close to 0.5.
 
 **Interpretation**
-- Logistic Regression slightly outperforms the neural network on F1-score.  
-- Both achieve very similar ROC-AUC, indicating both models separate churn vs non-churn similarly well.  
-- Given the dataset is **tabular** with mostly linear relationships, this result is expected.
-
+- XGBoost provides the strongest overall baseline performance for churn classification on this tabular dataset, consistent with expectations for gradient boosting methods.
+- Neural networks exhibit competitive probability ranking and benefit more from decision-level tuning, illustrating the distinction between ranking quality (ROC-AUC) and decision performance (F1-score).
+- Final model comparison is based on held-out test performance to avoid optimistic bias.
 ---
 
 ### 6.2 Regression Results (Predicting MonthlyCharges)
@@ -320,14 +338,15 @@ This section summarizes the performance of all classical and neural models on th
 
 ---
 
-### 6.3 Feature Importance (Classification)
+## 6.3 Feature Importance (Classification)
 
-Using Logistic Regression coefficients, we observe:
+Feature importance is reported using **Logistic Regression coefficients** for interpretability, even though XGBoost achieved the strongest predictive performance.
 
-- **Tenure** and **TotalCharges** reduce churn probability.  
-- **Month-to-month contract**, **electronic check**, and **additional internet services** increase churn probability.  
+Key observations:
+- **Tenure** and **TotalCharges** are associated with reduced churn probability.
+- **Month-to-month contracts**, **electronic check payments**, and **additional internet services** increase churn likelihood.
 
-These insights align with business expectations: long-term customers are more stable, while month-to-month customers are more likely to churn.
+These patterns align with business intuition: long-term customers are more stable, while flexible contracts and add-on services correlate with higher churn risk.
 
 ---
 ## 7. Reproducibility and MLflow Tracking
@@ -356,6 +375,8 @@ All preprocessing steps avoid leakage by design:
 - Splitting occurs **before** any normalization or modeling
 
 This ensures that no information from unseen data influences training.
+
+Threshold optimization was performed exclusively on the validation set, and the test set was used only for final evaluation.
 
 ---
 
